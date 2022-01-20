@@ -23,6 +23,10 @@ jobs:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+
+      - name: get maven 3.5.4
+        run: curl -L -O http://mirror.easyname.ch/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz ; tar xvzf apache-maven-3.5.4-bin.tar.gz ; 
+
       - name: Cache Maven packages
         uses: actions/cache@v1
         with:
@@ -34,4 +38,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=testproject-noinc -DskipTests
+        run: export JAVA_HOME=$JAVA_HOME_8 ; export PATH=apache-maven-3.5.4/bin:$PATH ; mvn -B -e -Dmaven.test.failure.ignore=true -V -Dcheckstyle.skip=true -Dpmd.skip=true  -Dgpg.skip=true -DskipTests verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=testproject-noinc -DskipTests
