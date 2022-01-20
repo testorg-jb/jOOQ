@@ -38,7 +38,7 @@
 package org.jooq;
 
 /**
- * Some publicly available constants used in jOOQ
+ * Some publicly available constants used in jOOQ :)
  *
  * @author Lukas Eder
  */
